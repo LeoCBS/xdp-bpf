@@ -4,6 +4,12 @@ This project was created to practice and study AF_XBF and BPF approach
 
 ## How to run source code and discard UDP packages using BPF
 
+Build and run an ubuntu docker container:
+
+    make run
+
+Start UDP server:
+
     nohup ./start-udp-server.sh &
 
 Check if python UDP server starting without errors
