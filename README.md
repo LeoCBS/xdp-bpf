@@ -14,7 +14,7 @@ Send one UDP message
 
     nc -u 127.0.0.1 1025 
 
-Write something and check udp server responde
+Write something and check UDP server response
 
 ```
 root@16ed8a46e4e6:/# nc -u 127.0.0.1 1025
