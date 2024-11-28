@@ -5,9 +5,9 @@
 
 #define SEC(NAME) __attribute__((section(NAME), used))
 
-SEC("drop_icmp")
+SEC("drop_udp")
 
-int drop_icmp_func(struct xdp_md *ctx) {
+int drop_udp_func(struct xdp_md *ctx) {
   int ipsize = 0;
 
   void *data = (void *)(long)ctx->data;
