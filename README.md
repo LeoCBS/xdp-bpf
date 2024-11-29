@@ -18,7 +18,7 @@ Check if python UDP server starting without errors
 
 Send one UDP message
 
-    nc -u 127.0.0.1 1025 
+    nc -u 172.17.0.2 1025 
 
 Write something and check UDP server response
 
@@ -31,7 +31,28 @@ Load BPF program using iproute2 command
 
     ip link set dev eth0 xdp obj /xdp-udp.o sec drop_udp
 
+Check if your bpf program was attached
+
+    ip link show dev eth0
+
+output:
+
+```
+root@7f25eeaff4c3:/# ip link show dev eth0
+65: eth0@if66: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 xdp qdisc noqueue state UP mode DEFAULT group default 
+    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    prog/xdp id 133 tag 649153f4d32aeb29 jited
+```
+
+## AF_XDP redirect example
+
+## Useful commands
 
 ## References
 
 https://gitlab.com/mwiget/xdp-drop-test/-/tree/master?ref_type=heads
+https://github.com/xdp-project/xdp-tutorial/blob/master/tracing03-xdp-debug-print/README.org
+https://docs.kernel.org/bpf/map_xskmap.html
+https://github.com/DouglasGray/xsk-rs
+https://github.com/libbpf/libbpf-rs/tree/master/examples
+

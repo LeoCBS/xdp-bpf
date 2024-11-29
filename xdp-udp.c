@@ -6,8 +6,7 @@
 #define SEC(NAME) __attribute__((section(NAME), used))
 
 SEC("drop_udp")
-
-int drop_udp_func(struct xdp_md *ctx) {
+int dropper(struct xdp_md *ctx) {
   int ipsize = 0;
 
   void *data = (void *)(long)ctx->data;
@@ -19,6 +18,9 @@ int drop_udp_func(struct xdp_md *ctx) {
 
   struct iphdr *ip = data + ipsize;
   ipsize += sizeof(struct iphdr);
+  if (data + ipsize > data_end) {
+    return XDP_PASS;
+  }
 
   if (ip->protocol == IPPROTO_UDP) {
     return XDP_DROP;
@@ -27,5 +29,4 @@ int drop_udp_func(struct xdp_md *ctx) {
   return XDP_PASS;
 }
 
-char __license[] SEC("license") = "GPL";
-
+char _license[] SEC("license") = "GPL";

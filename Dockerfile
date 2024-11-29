@@ -5,7 +5,7 @@ FROM ubuntu:20.04 AS build
 ARG PROGRAM_NAME
 
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get update \
-  && apt-get install -y clang llvm netcat python3
+  && apt-get install -y clang llvm libbpf-dev
 
 COPY *.c /
 RUN find /usr -name types.h
@@ -19,7 +19,7 @@ FROM ubuntu:20.04 AS image
 ARG PROGRAM_NAME
 
 RUN export DEBIAN_FRONTEND=noninteractive \
-  && apt-get update && apt-get install -y iproute2 iputils-ping netcat python3
+  && apt-get update && apt-get install -y iproute2 iputils-ping netcat python3 libbpf-dev vim ethtool linux-tools-common
 
 COPY --from=build /${PROGRAM_NAME}.o /
 COPY /entrypoint.sh /
