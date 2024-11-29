@@ -48,6 +48,8 @@ root@7f25eeaff4c3:/# ip link show dev eth0
 
 ## Useful commands
 
+
+
 ## References
 
 https://gitlab.com/mwiget/xdp-drop-test/-/tree/master?ref_type=heads
@@ -55,4 +57,5 @@ https://github.com/xdp-project/xdp-tutorial/blob/master/tracing03-xdp-debug-prin
 https://docs.kernel.org/bpf/map_xskmap.html
 https://github.com/DouglasGray/xsk-rs
 https://github.com/libbpf/libbpf-rs/tree/master/examples
+https://gist.github.com/fntlnz/f6638d59e0e39f0993219684d9bf57d3
 
