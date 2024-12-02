@@ -44,9 +44,21 @@ root@7f25eeaff4c3:/# ip link show dev eth0
     prog/xdp id 133 tag 649153f4d32aeb29 jited
 ```
 
-## AF_XDP redirect example
+## AF_XDP redirect UDP packages example using Rust
+
+In this example we will create a Rust program to attach a BPF program to eth0 interface to redirect UDP packages
+to XDP sockets (the RX ring and the TX ring). After attach BPF program, it will pool messages from XDP socket
+using xsk-rs (A Rust interface for Linux AF_XDP sockets using libxdp)
+
+See diagram below to check more details:
+
+
+
+
 
 ## Useful commands
+
+
 
 ## References
 
@@ -55,4 +67,5 @@ https://github.com/xdp-project/xdp-tutorial/blob/master/tracing03-xdp-debug-prin
 https://docs.kernel.org/bpf/map_xskmap.html
 https://github.com/DouglasGray/xsk-rs
 https://github.com/libbpf/libbpf-rs/tree/master/examples
+https://gist.github.com/fntlnz/f6638d59e0e39f0993219684d9bf57d3
 

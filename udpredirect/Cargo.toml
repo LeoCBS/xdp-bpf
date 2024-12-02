@@ -1,0 +1,13 @@
+[package]
+name = "udpredirect"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.93"
+libc = "0.2.167"
+libbpf-rs = "0.24.8"
+
+[build-dependencies]
+libbpf-cargo = "0.24.8"
+vmlinux = { git = "https://github.com/libbpf/vmlinux.h.git", rev = "83a228cf37fc65f2d14e4896a04922b5ee531a94", version = "0.0.0" }
