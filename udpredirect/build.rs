@@ -12,7 +12,7 @@ fn main() {
     )
     .join("src")
     .join("bpf")
-    .join("xdp-udp.skel.rs");
+    .join("udp.skel.rs");
 
     let arch = env::var("CARGO_CFG_TARGET_ARCH")
         .expect("CARGO_CFG_TARGET_ARCH must be set in build script");

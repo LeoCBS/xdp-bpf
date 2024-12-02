@@ -1,18 +1,18 @@
-programm_name=xdp-udp
+program_name=xdp-udp
 
 all: run
 
 build:
-	docker build --target build -t $(programm_name) .
+	docker build --target build -t $(program_name) .
 
 image:
-	docker build --target image -t $(programm_name) .
+	docker build --target image -t $(program_name) .
 
 xdp-drop.o:
-	clang -Wall -target bpf -c $(programm_name).c -o $(programm_name).o
+	clang -Wall -target bpf -c $(program_name).c -o $(program_name).o
 
 run: image
-	docker run --privileged -ti --rm --name $(programm_name) $(programm_name)
+	docker run --privileged -ti --rm --name $(program_name) $(program_name)
 
 reqs:
 	sudo apt-get install -y make gcc libssl-dev bc libelf-dev libcap-dev \
@@ -20,6 +20,6 @@ reqs:
   graphviz
 
 clean:
-	docker rmi $(programm_name)
+	docker rmi $(program_name)
 	docker system prune -f
 
