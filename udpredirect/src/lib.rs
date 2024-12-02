@@ -1,4 +1,4 @@
-use anyhow::bail;
+use anyhow::{bail, Context};
 use libbpf_rs::skel::OpenSkel;
 use libbpf_rs::skel::SkelBuilder;
 use std::mem::MaybeUninit;
@@ -12,7 +12,8 @@ mod xdpmd {
 use xdpmd::*;
 
 pub fn load_bpf_redirect_to_xdp_queue() -> anyhow::Result<()> {
-    //let ifindex = get_ifindex(&config.interface.if_name).context("could not get interface")?;
+    let if_name = String::from("eth0");
+    let ifindex = get_ifindex(&if_name).context("could not get interface")?;
     let mut skel_builder = UdpSkelBuilder::default();
     skel_builder.obj_builder.debug(true);
 
@@ -23,7 +24,7 @@ pub fn load_bpf_redirect_to_xdp_queue() -> anyhow::Result<()> {
     // Load into kernel
     let mut skel = open_skel.load()?;
 
-    println!("deu bom");
+    println!("deu bom {ifindex}");
     Ok(())
 }
 
