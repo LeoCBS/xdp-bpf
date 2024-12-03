@@ -7,6 +7,7 @@ edition = "2021"
 anyhow = "1.0.93"
 libc = "0.2.167"
 libbpf-rs = "0.24.8"
+xsk-rs = { version = "0.6.1", git = "https://github.com/ppizarro/xsk-rs.git", branch = "update-libxdp-sys" }
 
 [build-dependencies]
 libbpf-cargo = "0.24.8"

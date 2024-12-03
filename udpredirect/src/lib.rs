@@ -1,3 +1,5 @@
+mod queuereader;
+
 use anyhow::{bail, Context};
 use libbpf_rs::skel::OpenSkel;
 use libbpf_rs::skel::SkelBuilder;
