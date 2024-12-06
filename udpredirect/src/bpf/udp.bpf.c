@@ -1,6 +1,7 @@
+#include <linux/bpf.h>
+
 #include <bpf/bpf_endian.h>
 #include <bpf/bpf_helpers.h>
-#include <linux/bpf.h>
 
 #include <linux/if_ether.h>
 #include <linux/in.h>
@@ -21,7 +22,8 @@ struct {
 } xsks_map SEC(".maps");
 
 SEC("xdp")
-int md_capture(struct xdp_md *ctx) {
+int udp_capture(struct xdp_md *ctx) {
+  bpf_printk("Hello world, from BPF!");
   void *data, *data_meta, *data_end;
   struct ethhdr *eth = NULL;
   struct udphdr *udp = NULL;

@@ -1,5 +1,4 @@
-mod lib;
-
 fn main() {
-    lib::load_bpf_redirect_to_xdp_queue();
+    env_logger::init();
+    udpredirect::load_bpf_redirect_to_xdp_queue();
 }

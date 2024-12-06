@@ -7,7 +7,9 @@ edition = "2021"
 anyhow = "1.0.93"
 libc = "0.2.167"
 libbpf-rs = "0.24.8"
-
+xsk-rs = { version = "0.6.1", git = "https://github.com/ppizarro/xsk-rs.git", branch = "update-libxdp-sys" }
+log = "0.4.22"
+env_logger = "0.11.5"
 [build-dependencies]
 libbpf-cargo = "0.24.8"
 vmlinux = { git = "https://github.com/libbpf/vmlinux.h.git", rev = "83a228cf37fc65f2d14e4896a04922b5ee531a94", version = "0.0.0" }

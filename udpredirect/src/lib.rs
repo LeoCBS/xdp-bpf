@@ -1,18 +1,20 @@
-use anyhow::bail;
+use anyhow::{bail, Context};
 use libbpf_rs::skel::OpenSkel;
 use libbpf_rs::skel::SkelBuilder;
+use libbpf_rs::MapCore;
+use libbpf_rs::MapFlags;
 use std::mem::MaybeUninit;
+use std::thread;
 
 mod xdpmd {
-    include!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/src/bpf/xdpudpredirect.skel.rs"
-    ));
+    include!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/bpf/udp.skel.rs"));
 }
 use xdpmd::*;
+mod xdpqueue;
 
 pub fn load_bpf_redirect_to_xdp_queue() -> anyhow::Result<()> {
-    //let ifindex = get_ifindex(&config.interface.if_name).context("could not get interface")?;
+    let if_name = String::from("eth0");
+    let ifindex = get_ifindex(&if_name).context("could not get interface")?;
     let mut skel_builder = UdpSkelBuilder::default();
     skel_builder.obj_builder.debug(true);
 
@@ -23,7 +25,34 @@ pub fn load_bpf_redirect_to_xdp_queue() -> anyhow::Result<()> {
     // Load into kernel
     let mut skel = open_skel.load()?;
 
-    println!("deu bom");
+    let queue_id: u32 = 0;
+    let mut qr = xdpqueue::Reader::new(queue_id)?;
+
+    // update xsk_map with queue_id and sock_fd
+    let sock_fd = qr.fd();
+    skel.maps.xsks_map.update(
+        &queue_id.to_ne_bytes(),
+        &sock_fd.to_ne_bytes(),
+        MapFlags::empty(),
+    )?;
+
+    // attach prog to interface and run
+    let link = skel.progs.udp_capture.attach_xdp(ifindex as i32)?;
+    skel.links = UdpLinks {
+        udp_capture: Some(link),
+    };
+
+    println!("deu bom {ifindex}");
+
+    let handle = thread::spawn(move || {
+        if let Err(err) = qr.run() {
+            log::error!("error to run queue {}", err);
+        }
+    });
+
+    println!("waiting thread run / if index = {ifindex}");
+    handle.join().unwrap();
+
     Ok(())
 }
 
