@@ -4,6 +4,7 @@ use libbpf_rs::skel::SkelBuilder;
 use libbpf_rs::MapCore;
 use libbpf_rs::MapFlags;
 use std::mem::MaybeUninit;
+use std::thread;
 
 mod xdpmd {
     include!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/bpf/udp.skel.rs"));
@@ -43,11 +44,15 @@ pub fn load_bpf_redirect_to_xdp_queue() -> anyhow::Result<()> {
 
     println!("deu bom {ifindex}");
 
-    if let Err(err) = qr.run() {
-        log::error!("error to run queue {}", err);
-    }
+    let handle = thread::spawn(move || {
+        if let Err(err) = qr.run() {
+            log::error!("error to run queue {}", err);
+        }
+    });
 
-    println!("deu bom {ifindex}");
+    println!("waiting thread run / if index = {ifindex}");
+    handle.join().unwrap();
+
     Ok(())
 }
 

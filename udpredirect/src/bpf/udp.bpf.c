@@ -23,6 +23,7 @@ struct {
 
 SEC("xdp")
 int udp_capture(struct xdp_md *ctx) {
+  bpf_printk("Hello world, from BPF!");
   void *data, *data_meta, *data_end;
   struct ethhdr *eth = NULL;
   struct udphdr *udp = NULL;
