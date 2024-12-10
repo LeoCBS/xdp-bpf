@@ -29,7 +29,7 @@ FROM ubuntu:22.04 AS prod
 
 RUN apt update
 RUN apt-get install -y clang lld musl-dev git llvm libelf-dev libpcap-dev \
-    build-essential libc6-dev-i386 libbpf-dev m4 netcat-traditional vim ethtool iproute2
+    build-essential libc6-dev-i386 libbpf-dev m4 netcat-traditional vim ethtool iproute2 tcpdump socat net-tools
 ENV RUST_BACKTRACE=1
 
 # Copy the executable from the "build" stage.
