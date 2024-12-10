@@ -58,6 +58,13 @@ See diagram below to check more details:
 
 ## Useful commands
 
+Inspect all UDP packages
+
+    sudo tcpdump -i lo -n udp port 2399 -v -X
+
+Cat BPF trace/prints on host or mount debugFS on docker container
+
+    sudo cat  /sys/kernel/debug/tracing/trace_pipe
 
 
 ## References
@@ -69,3 +76,4 @@ https://github.com/DouglasGray/xsk-rs
 https://github.com/libbpf/libbpf-rs/tree/master/examples
 https://gist.github.com/fntlnz/f6638d59e0e39f0993219684d9bf57d3
 https://docs.kernel.org/networking/af_xdp.html
+https://hemslo.io/run-ebpf-programs-in-docker-using-docker-bpf/
