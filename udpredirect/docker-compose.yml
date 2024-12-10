@@ -1,0 +1,13 @@
+services:
+  udpredirect:
+    privileged: true
+    init: true
+    image: udpredirect:latest
+
+  udpproducer:
+    image: udpproducer:latest
+    volumes:
+      - /etc/localtime:/etc/localtime
+    links:
+        - udpredirect
+

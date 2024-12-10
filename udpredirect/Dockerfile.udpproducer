@@ -1,0 +1,7 @@
+FROM python:3-slim
+
+WORKDIR /app
+COPY udpproducer.py  udpproducer.py
+
+ENTRYPOINT ["python", "udpproducer.py"]
+

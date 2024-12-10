@@ -1,12 +1,22 @@
 program_name=udpredirect
+udpproducer_name=udpproducer
 
 all: run
 
 build:
-	docker build -D --target builder -t $(program_name) .
+	docker build --target builder -t $(program_name) .
 
-image:
-	docker build -D -t $(program_name) .
+image: image-udpproducer
+	docker build -t $(program_name) .
+
+image-udpproducer:
+	docker build -f Dockerfile.udpproducer -t $(udpproducer_name) .
+
+run-standalone: image
+	docker run --privileged -ti --init  --rm -v debugfs:/sys/kernel/debug:rw  $(program_name)
 
 run: image
-	docker run --privileged -ti --init --rm -v debugfs:/sys/kernel/debug:rw  $(program_name)
+	docker-compose run --rm udpproducer
+
+stop:
+	docker-compose down -v --remove-orphans
