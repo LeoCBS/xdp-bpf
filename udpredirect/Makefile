@@ -15,7 +15,7 @@ image-udpproducer:
 run-standalone: image
 	docker run --privileged -ti --init  --rm -v debugfs:/sys/kernel/debug:rw  $(program_name)
 
-run: image
+run: stop image
 	docker-compose run --rm udpproducer
 
 stop:

@@ -2,6 +2,8 @@ use std::os::fd::AsRawFd;
 use std::os::fd::RawFd;
 
 use anyhow::{self, Context};
+use etherparse::PacketHeaders;
+use etherparse::UdpSlice;
 use xsk_rs::{
     config::{Interface, LibxdpFlags, SocketConfig, UmemConfig},
     FillQueue, FrameDesc, RxQueue, Socket, Umem,
@@ -90,6 +92,17 @@ impl Reader {
                     for recv_desc in self.frames.iter().take(frames_rcvd) {
                         let data = unsafe { self.umem.data(recv_desc) };
                         log::info!("received this packet {data:?}");
+                        match PacketHeaders::from_ethernet_slice(data.contents()) {
+                            Err(value) => println!("Err {:?}", value),
+                            Ok(value) => {
+                                println!(
+                                    "dest port: {:?}",
+                                    value.transport.unwrap().udp().unwrap().destination_port
+                                );
+                                println!("payload: {:?}", value.payload.slice());
+                                //bytes on base10
+                            }
+                        }
                     }
                     // Add frames back to fill queue
                     while unsafe {

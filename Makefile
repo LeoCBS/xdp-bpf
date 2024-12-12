@@ -12,7 +12,7 @@ xdp-drop.o:
 	clang -Wall -target bpf -c $(program_name).c -o $(program_name).o
 
 run: image
-	docker run --privileged -ti --rm --name $(program_name) $(program_name)
+	docker run --privileged -ti --rm -d $(program_name)
 
 reqs:
 	sudo apt-get install -y make gcc libssl-dev bc libelf-dev libcap-dev \

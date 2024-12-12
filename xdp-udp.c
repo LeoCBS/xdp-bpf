@@ -1,12 +1,13 @@
 #include <linux/bpf.h>
-#include <linux/in.h>
 #include <linux/if_ether.h>
+#include <linux/in.h>
 #include <linux/ip.h>
 
 #define SEC(NAME) __attribute__((section(NAME), used))
 
-SEC("drop_udp")
-int dropper(struct xdp_md *ctx) {
+SEC("drop_icmp")
+
+int drop_icmp_func(struct xdp_md *ctx) {
   int ipsize = 0;
 
   void *data = (void *)(long)ctx->data;
@@ -19,14 +20,17 @@ int dropper(struct xdp_md *ctx) {
   struct iphdr *ip = data + ipsize;
   ipsize += sizeof(struct iphdr);
   if (data + ipsize > data_end) {
+    // not an ip packet, too short. Pass it on
     return XDP_PASS;
   }
 
-  if (ip->protocol == IPPROTO_UDP) {
+  // technically, we should also check if it is an IP packet by
+  // checking the ethernet header proto field ...
+  if (ip->protocol == IPPROTO_ICMP) {
     return XDP_DROP;
   }
 
   return XDP_PASS;
 }
 
-char _license[] SEC("license") = "GPL";
+char __license[] SEC("license") = "GPL";
